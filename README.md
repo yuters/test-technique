@@ -1,6 +1,14 @@
 # Test technique
 
-Application Full-stack IA, Laravel & VueJS permettant la gestion d'équipes de courtiers.
+Application Full-stack IA, Laravel & VueJS (avec Nuxt) permettant la gestion d'équipes de courtiers.
+
+### Prérequis
+
+- PHP `8.3+`
+- [Composer](https://getcomposer.org/) `2.x`
+- [Node.js](https://nodejs.org/) `20.x+`
+- `npm`
+- SQLite `3`
 
 ### Installation
 
@@ -9,6 +17,8 @@ git clone https://github.com/yuters/test-technique.git
 cd test-technique
 ./dev-setup.sh
 ```
+
+Le site sera disponible sur http://localhost:3000/
 
 ## Architecture
 
@@ -85,14 +95,23 @@ test-technique/
 
 - Le test technique est fait entièrement avec l'aide de l'application de console Codex (OpenAI).
 - Pour le backend, on utilise Laravel Boost.
-- Pour le frontend, l'outil est relié au serveur MCP de Nuxt.js.
+- Pour le frontend, l'outil est relié au serveur MCP de Nuxt.
 
 #### Exemple ou l'IA m'a aidé
 
 La génération du code (Structure principale, styles et html) pour le frontend, et aussi pour générer les suites
-de feature tests.
+de feature tests. J'ai aussi utilisé l'IA pour faire une courte révision de code avant de vous l'envoyer, hanté
+par la pensée que j'aurais pu faire une terrible erreur flagrante. Ça m'a permis de régler certains détails pour
+l'accessibilité (raccourcis clavier et wai-aria).
 
 #### Cas d'ajustement
 
-J'ai demandé un premier jet de la structure du frontend sans le MCP de Nuxt.js, et je pouvais bien voir que c'était pas
-très génial. Après avoir chargé le MCP, ça faisait plus de sens. 
+J'ai demandé un premier jet de la structure du frontend sans le MCP de Nuxt, et je pouvais bien voir que c'était pas
+très génial et que ça ne correspondait pas aux exemples que je voyais dans la documentation. Après avoir chargé le MCP,
+ça faisait plus de sens. J'ai aussi fait quelques ajustements CSS, normalement j'aurais prioriser un framework CSS, mais
+je trouvais que c'était assez simple et uniforme pour le contexte de ce projet.
+
+
+#### Un gros merci pour votre considération à ma candidature !
+
+Martin
