@@ -22,7 +22,7 @@ class BrokerController extends Controller
      */
     public function store(StoreBrokerRequest $request, CreateBroker $createBroker): JsonResponse
     {
-        return $createBroker->execute($request->all())->toResource()->response();
+        return $createBroker->execute($request->validated())->toResource()->response();
     }
 
     /**
