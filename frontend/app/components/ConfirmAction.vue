@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
   pendingLabel: 'Traitement en cours...',
   successLabel: 'Action complétée.',
   successRedirectDelayMs: 1800,
-  successRedirectTo: undefined,
+  successRedirectTo: '/',
   triggerVariant: 'ghost',
 })
 

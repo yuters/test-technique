@@ -9,3 +9,6 @@ args = ["-y", "mcp-remote", "https://nuxt.com/mcp"]
 
 [mcp_servers.nuxt.tools.get-documentation-page]
 approval_mode = "approve"
+
+[mcp_servers.nuxt.tools.list-documentation-pages]
+approval_mode = "approve"
