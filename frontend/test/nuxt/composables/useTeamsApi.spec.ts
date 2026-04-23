@@ -1,4 +1,5 @@
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useTeamsApi } from '#imports'
@@ -38,11 +39,22 @@ describe('useTeamsApi', () => {
     useFetchMock.mockReturnValue(response)
 
     const teamsApi = useTeamsApi()
+    const teamId = ref('42')
 
-    expect(teamsApi.useTeam('42')).toBe(response)
-    expect(useFetchMock).toHaveBeenCalledWith('/api/teams/42', {
-      key: 'team-42',
-    }, expect.any(String))
+    expect(teamsApi.useTeam(teamId)).toBe(response)
+    expect(useFetchMock).toHaveBeenCalledTimes(1)
+
+    const call = useFetchMock.mock.calls[0]
+
+    expect(call).toBeDefined()
+
+    const [url, options] = call!
+
+    expect(typeof url).toBe('function')
+    expect(url()).toBe('/api/teams/42')
+    expect(typeof options.key).toBe('function')
+    expect(options.key()).toBe('team-42')
+    expect(options.watch).toHaveLength(1)
   })
 
   it('sends broker creation requests to the team brokers endpoint', async () => {

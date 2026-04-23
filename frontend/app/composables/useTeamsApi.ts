@@ -1,3 +1,5 @@
+import type { MaybeRef } from 'vue'
+
 import type { CreateBrokerPayload } from '#shared/types/broker'
 import type { TeamResponse, TeamsResponse } from '#shared/types/team'
 
@@ -8,9 +10,12 @@ export const useTeamsApi = () => {
     })
   }
 
-  const useTeam = (teamId: string) => {
-    return useFetch<TeamResponse>(`/api/teams/${teamId}`, {
-      key: `team-${teamId}`,
+  const useTeam = (teamId: MaybeRef<string>) => {
+    const resolvedTeamId = computed(() => unref(teamId))
+
+    return useFetch<TeamResponse>(() => `/api/teams/${resolvedTeamId.value}`, {
+      key: () => `team-${resolvedTeamId.value}`,
+      watch: [resolvedTeamId],
     })
   }
 

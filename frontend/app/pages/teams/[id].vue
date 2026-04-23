@@ -5,7 +5,7 @@ const route = useRoute()
 const teamId = computed(() => route.params.id as string)
 const { deleteTeam, useTeam } = useTeamsApi()
 
-const { data, error, refresh } = await useTeam(teamId.value)
+const { data, error, refresh } = await useTeam(teamId)
 
 const team = computed(() => data.value?.data ?? null)
 const brokers = computed<Broker[]>(() => team.value?.brokers ?? [])

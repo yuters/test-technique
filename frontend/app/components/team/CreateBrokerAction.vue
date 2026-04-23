@@ -25,6 +25,16 @@ const isSubmitting = ref(false)
 const succeeded = ref(false)
 const formId = 'create-broker-form'
 const nameInput = ref<HTMLInputElement | null>(null)
+let closeDialogTimeout: ReturnType<typeof setTimeout> | null = null
+
+const clearCloseDialogTimeout = (): void => {
+  if (!closeDialogTimeout) {
+    return
+  }
+
+  clearTimeout(closeDialogTimeout)
+  closeDialogTimeout = null
+}
 
 const clearFieldErrors = (): void => {
   fieldErrors.email = ''
@@ -73,6 +83,7 @@ const isValidationErrorResponse = (error: unknown): error is {
 }
 
 const openDialog = () => {
+  clearCloseDialogTimeout()
   errorMessage.value = ''
   succeeded.value = false
   clearFieldErrors()
@@ -91,6 +102,7 @@ const closeDialog = () => {
   isDialogOpen.value = false
   errorMessage.value = ''
   clearFieldErrors()
+  clearCloseDialogTimeout()
 }
 
 const handleSubmit = async () => {
@@ -111,7 +123,9 @@ const handleSubmit = async () => {
     succeeded.value = true
     emit('created')
 
-    setTimeout(() => {
+    clearCloseDialogTimeout()
+    closeDialogTimeout = setTimeout(() => {
+      closeDialogTimeout = null
       resetForm()
       isDialogOpen.value = false
       succeeded.value = false
@@ -136,6 +150,10 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+onBeforeUnmount(() => {
+  clearCloseDialogTimeout()
+})
 </script>
 
 <template>

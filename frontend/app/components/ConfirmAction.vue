@@ -26,8 +26,19 @@ const isDialogOpen = ref(false)
 const currentErrorMessage = ref('')
 const isSubmitting = ref(false)
 const succeeded = ref(false)
+let redirectTimeout: ReturnType<typeof setTimeout> | null = null
+
+const clearRedirectTimeout = (): void => {
+  if (!redirectTimeout) {
+    return
+  }
+
+  clearTimeout(redirectTimeout)
+  redirectTimeout = null
+}
 
 const openDialog = () => {
+  clearRedirectTimeout()
   currentErrorMessage.value = ''
   succeeded.value = false
   isDialogOpen.value = true
@@ -40,6 +51,7 @@ const closeDialog = () => {
 
   isDialogOpen.value = false
   currentErrorMessage.value = ''
+  clearRedirectTimeout()
 }
 
 const handleConfirm = async () => {
@@ -55,7 +67,10 @@ const handleConfirm = async () => {
     succeeded.value = true
 
     if (props.successRedirectTo) {
-      setTimeout(async () => {
+      clearRedirectTimeout()
+
+      redirectTimeout = setTimeout(async () => {
+        redirectTimeout = null
         await router.push(props.successRedirectTo)
       }, props.successRedirectDelayMs)
     }
@@ -65,6 +80,10 @@ const handleConfirm = async () => {
     isSubmitting.value = false
   }
 }
+
+onBeforeUnmount(() => {
+  clearRedirectTimeout()
+})
 </script>
 
 <template>

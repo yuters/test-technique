@@ -1,5 +1,5 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   closeOnBackdrop?: boolean
   open: boolean
   title: string
@@ -11,9 +11,118 @@ const emit = defineEmits<{
   close: []
 }>()
 
+const dialogRef = ref<HTMLElement | null>(null)
+const titleId = useId()
+let previouslyFocusedElement: HTMLElement | null = null
+
+const getFocusableElements = (): HTMLElement[] => {
+  if (!dialogRef.value) {
+    return []
+  }
+
+  return Array.from(
+    dialogRef.value.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => !element.hasAttribute('hidden') && element.getAttribute('aria-hidden') !== 'true')
+}
+
+const focusDialog = async (): Promise<void> => {
+  await nextTick()
+
+  const [firstFocusableElement] = getFocusableElements()
+
+  if (firstFocusableElement) {
+    firstFocusableElement.focus()
+    return
+  }
+
+  dialogRef.value?.focus()
+}
+
 const handleBackdropClick = () => {
   emit('close')
 }
+
+const handleKeydown = (event: KeyboardEvent): void => {
+  if (!props.open) {
+    return
+  }
+
+  if (event.key === 'Escape') {
+    if (!props.closeOnBackdrop) {
+      return
+    }
+
+    event.preventDefault()
+    emit('close')
+    return
+  }
+
+  if (event.key !== 'Tab') {
+    return
+  }
+
+  const focusableElements = getFocusableElements()
+
+  if (!focusableElements.length) {
+    event.preventDefault()
+    dialogRef.value?.focus()
+    return
+  }
+
+  const firstFocusableElement = focusableElements[0]
+  const lastFocusableElement = focusableElements[focusableElements.length - 1]
+
+  if (!firstFocusableElement || !lastFocusableElement) {
+    event.preventDefault()
+    dialogRef.value?.focus()
+    return
+  }
+
+  const activeElement = document.activeElement
+
+  if (event.shiftKey && activeElement === firstFocusableElement) {
+    event.preventDefault()
+    lastFocusableElement.focus()
+    return
+  }
+
+  if (!event.shiftKey && activeElement === lastFocusableElement) {
+    event.preventDefault()
+    firstFocusableElement.focus()
+  }
+}
+
+watch(() => props.open, async (isOpen) => {
+  if (!import.meta.client) {
+    return
+  }
+
+  if (isOpen) {
+    previouslyFocusedElement = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null
+
+    window.addEventListener('keydown', handleKeydown)
+    await focusDialog()
+    return
+  }
+
+  window.removeEventListener('keydown', handleKeydown)
+  previouslyFocusedElement?.focus()
+  previouslyFocusedElement = null
+}, {
+  immediate: true,
+})
+
+onBeforeUnmount(() => {
+  if (!import.meta.client) {
+    return
+  }
+
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
@@ -24,12 +133,14 @@ const handleBackdropClick = () => {
       @click.self="closeOnBackdrop ? handleBackdropClick() : undefined"
     >
       <section
+        ref="dialogRef"
         class="dialog"
         aria-modal="true"
-        aria-labelledby="app-dialog-title"
+        :aria-labelledby="titleId"
         role="dialog"
+        tabindex="-1"
       >
-        <h2 id="app-dialog-title">
+        <h2 :id="titleId">
           {{ title }}
         </h2>
 
