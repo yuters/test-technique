@@ -7,7 +7,7 @@ Full-stack IA, Laravel & VueJS
 ### Structure principale:
 
 ```text
-centiva/
+test-technique/
 ├── backend/
 │   ├── app/
 │   │   ├── Actions/
@@ -28,8 +28,35 @@ centiva/
 │   │   └── Models/
 │   │       ├── Broker.php
 │   │       └── Team.php
-├────── routes/
+│   └── routes/
 │       └── api.php
+├── frontend/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── ConfirmAction.vue
+│   │   │   ├── StateCard.vue
+│   │   │   └── team/
+│   │   │       └── CreateBrokerAction.vue
+│   │   ├── composables/
+│   │   │   └── useTeamsApi.ts
+│   │   └── pages/
+│   │       └── teams/
+│   │           ├── [id].vue
+│   │           └── index.vue
+│   ├── server/
+│   │   ├── api/
+│   │   │   └── teams/
+│   │   │       ├── [id].delete.ts
+│   │   │       ├── [id].get.ts
+│   │   │       ├── index.get.ts
+│   │   │       └── [id]/
+│   │   │           └── brokers.post.ts
+│   │   └── utils/
+│   │       └── backend.ts
+│   ├── shared/
+│   │   └── types/
+│   │       ├── broker.ts
+│   │       └── team.ts
 ```
 
 ### Routes

@@ -2,3 +2,10 @@
 command = "php"
 args = ["artisan", "boost:mcp"]
 cwd = "/home/martin/Sites/centiva/backend"
+
+[mcp_servers.nuxt]
+command = "npx"
+args = ["-y", "mcp-remote", "https://nuxt.com/mcp"]
+
+[mcp_servers.nuxt.tools.get-documentation-page]
+approval_mode = "approve"

@@ -1,0 +1,43 @@
+:root {
+  color-scheme: light;
+  --page-bg:
+    radial-gradient(circle at top right, rgba(39, 174, 96, 0.12), transparent 28%),
+    linear-gradient(180deg, #f3f8f3 0%, #ffffff 48%, #eef5ef 100%);
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-strong: #ffffff;
+  --surface-border: rgba(18, 40, 30, 0.08);
+  --text-primary: #13231b;
+  --text-secondary: #4f6358;
+  --accent: #1d8f56;
+  --accent-strong: #10613a;
+  --shadow: 0 24px 60px rgba(26, 49, 37, 0.08);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#__nuxt {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+  transition: color 180ms ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
