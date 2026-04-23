@@ -14,7 +14,7 @@ class BrokerController extends Controller
      */
     public function index()
     {
-        return Broker::with('team')->get()->toResourceCollection();
+        return Broker::with('team')->orderBy('name')->get()->toResourceCollection();
     }
 
     /**

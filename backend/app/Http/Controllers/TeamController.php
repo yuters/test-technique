@@ -13,7 +13,7 @@ class TeamController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return Team::with('brokers')->get()->toResourceCollection();
+        return Team::with('brokers')->orderBy('name')->get()->toResourceCollection();
     }
 
     /**

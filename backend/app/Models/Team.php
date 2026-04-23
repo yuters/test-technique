@@ -21,6 +21,6 @@ class Team extends Model
      */
     public function brokers(): HasMany
     {
-        return $this->hasMany(Broker::class);
+        return $this->hasMany(Broker::class)->orderBy('name');
     }
 }
