@@ -18,7 +18,7 @@ it('lists brokers with their team', function () {
         ->assertOk()
         ->assertJsonCount(2, 'data');
 
-    foreach ($brokers->values() as $index => $broker) {
+    foreach ($brokers->orderBy('name')->values() as $index => $broker) {
         $response
             ->assertJsonPath("data.$index.name", $broker->name)
             ->assertJsonPath("data.$index.email", $broker->email)
